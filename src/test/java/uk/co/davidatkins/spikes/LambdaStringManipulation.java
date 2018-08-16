@@ -3,6 +3,7 @@ package uk.co.davidatkins.spikes;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LambdaStringConcat {
+public class LambdaStringManipulation {
 
     @Test
     public void concatArbitraryStrings() {
@@ -51,6 +52,20 @@ public class LambdaStringConcat {
                 .collect(Collectors.joining());
 
         assertEquals("hellohellohello",result);
+
+    }
+
+    @Test
+    public void doubleUpLetters() {
+
+        String myString = "hello";
+        char[] myChars = myString.toCharArray();
+
+        String result = IntStream.range(0, myChars.length)
+                .mapToObj(i -> "" + myChars[i] + myChars[i])
+                .collect(Collectors.joining());
+
+        assertEquals("hheelllloo",result);
 
     }
 
