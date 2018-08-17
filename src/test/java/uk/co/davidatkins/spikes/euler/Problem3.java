@@ -7,55 +7,59 @@ import java.util.*;
 public class Problem3 {
 
     private Set<Long> primes = new TreeSet<>();
+    private Set<Long> factors = new TreeSet<>();
 
-    public Set<Long> findFactors(long number, boolean recursing) {
+    public boolean isPrime(long number) {
 
-        Set<Long> factors = new HashSet<>();
-
-        if(!recursing) {
-           // System.out.println("Find Factors for " + number);
+        // primes we've already determined
+        if(primes.contains(number)) {
+            return true;
         }
 
         // attempt to divide by primes
         for(Long prime : primes) {
-
             if(number % prime == 0) {
-                // it divides, this is a factor
-                factors.add(prime);
+                return false;
+            }
+        }
 
-                long result = number / prime;
+        primes.add(number);
+        return true;
 
-                if(primes.contains(result)) {
-                    // result is a prime, end of the line
-                    return factors;
-                } else {
-                    factors.addAll(findFactors(result,true));
-                    return factors;
+    }
+
+    /**
+     * I found this strategy to determine factors on the internet
+     *
+     * We build up a list of primes as we go
+     *
+     * @param number
+     * @return
+     */
+    public long reduce(long number) {
+
+        // find smallest prime number we can divide by
+        for(long i = 2; i < number; i++) {
+
+            if(isPrime(i)) {
+
+                if(number % i == 0) {
+                    long reduced = number / i;
+                    factors.add(i);
+                    System.out.println("Div by " + i + " to reduce to " + reduced);
+                    return reduced;
                 }
 
             }
 
         }
 
-        if(factors.isEmpty()) {
-            if(!primes.contains(number)) {
-                //System.out.println(number + " is prime!");
-                primes.add(number);
-            }
-        }
-
-        return factors;
+        factors.add(number);
+        throw new IllegalStateException("can't reduce anymore at number " + number);
 
     }
 
     /**
-     * This is incredibly slow, this isn't going to work. I think i need to attack
-     * this starting at the large number instead of building up to it, but methods
-     * i've seen assume you know what primes are. Maybe i can just try dividing starting
-     * from 2 and continue up and if the division works, only then check to see if the divisor
-     * is a prime number? That way we're quickly reducing the size of the headline number
-     * (e.g. immediately halving it?)
-     *
      * The prime factors of 13195 are 5, 7, 13 and 29.
      *
      * What is the largest prime factor of the number 600851475143 ?
@@ -65,16 +69,16 @@ public class Problem3 {
 
         primes.add(2L);
 
-        for(long i = 3; i < 600851475143L; i++) {
-
-            if(i > 851475143) {
-                System.out.println("here");
+        try {
+            long reduced = 600851475143L;
+            while (true) {
+                reduced = reduce(reduced);
             }
-
-            findFactors(i,false);
-
+        } catch(IllegalStateException e) {
+            System.out.println(e.getMessage());
         }
 
+        System.out.println("Factors are " + factors);
 
     }
 
