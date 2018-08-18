@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Arrays {
+public class ArraysSpikes {
 
     @Test
     public void largestSpanTest() {
