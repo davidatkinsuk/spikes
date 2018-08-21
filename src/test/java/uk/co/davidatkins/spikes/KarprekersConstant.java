@@ -38,6 +38,7 @@ public class KarprekersConstant {
 
     private int kaprekersConstant(int input, int iterationCount) {
 
+        // instead of padding string could multiple by 10 until length is 10
         String inputString = rightPadZeros(Integer.toString(input),4);
 
         int inputAsc = Integer.parseInt(sortString(inputString));
